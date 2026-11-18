@@ -1,0 +1,729 @@
+/* Barycent site styles — a space theme, deliberately.
+   Palette: Indigo #4F46E5 · Sky #38BDF8 · Lavender #818CF8 · Gold #F5B83D (barycenter)
+            Navy #0B1026 · Ink #1E1B4B.
+   Dark-always by design: a starfield doesn't survive a light theme, and this
+   brand's whole visual language (orbit, gravity, the gold barycenter dot)
+   only reads correctly against the night. */
+
+:root {
+  --indigo: #4f46e5;
+  --indigo-soft: #818cf8;
+  --sky: #38bdf8;
+  --gold: #f5b83d;
+  --navy: #0b1026;
+  --navy-raised: #10172f;
+  --navy-border: #1f2a4d;
+  --ink: #1e1b4b;
+
+  --bg: var(--navy);
+  --bg-raised: var(--navy-raised);
+  --border: var(--navy-border);
+  --text: #e8eaf6;
+  --text-dim: #9aa3c4;
+  --text-faint: #6b7399;
+  --accent: var(--indigo-soft);
+  --accent-strong: var(--sky);
+  --link: var(--sky);
+  --code-bg: #0e1530;
+
+  --radius: 14px;
+  --radius-sm: 8px;
+  --maxw: 1120px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text);
+}
+.brand img { width: 28px; height: 28px; }
+.brand:hover { text-decoration: none; opacity: 0.9; }
+
+.nav { display: flex; align-items: center; gap: 28px; }
+.nav a {
+  color: var(--text-dim);
+  font-size: 14.5px;
+  font-weight: 500;
+}
+.nav a:hover { color: var(--text); text-decoration: none; }
+.nav .btn { color: var(--navy); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14.5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.btn:hover { text-decoration: none; opacity: 0.92; }
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--indigo), var(--sky));
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-lg { padding: 13px 24px; font-size: 15.5px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 96px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 480px;
+  background: radial-gradient(ellipse at 30% 0%, color-mix(in srgb, var(--indigo) 35%, transparent), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--sky) 25%, transparent), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero .wrap { position: relative; z-index: 1; }
+.eyebrow {
+  display: inline-flex;
+  flex-wrap: wrap; /* flex containers default to nowrap; this one's text
+    content splits into several anonymous flex items around the <em>, and
+    without wrap, a nowrap row of flex items can't break onto a second
+    line — it forces the whole page wider instead of wrapping. */
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent-strong) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-strong) 30%, transparent);
+  /* A rounded rect, not a true pill: this badge sometimes holds a full
+     definition-length line (see the home hero), and a 999px pill shape
+     only looks right for a single short line — wrapped text inside one
+     reads as a broken, lopsided oval. A smaller fixed radius looks
+     correct whether the content is one line or wraps to three. */
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  margin-bottom: 24px;
+}
+.eyebrow .dot { width: 6px; height: 6px; margin-top: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; animation: star-twinkle 2.4s ease-in-out infinite; }
+
+.hero h1 {
+  font-size: clamp(34px, 5.5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  max-width: 820px;
+}
+.hero h1 .grad {
+  background: linear-gradient(135deg, var(--indigo-soft), var(--sky));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero p.lede {
+  font-size: clamp(17px, 2vw, 20px);
+  color: var(--text-dim);
+  max-width: 640px;
+  margin: 0 0 36px;
+}
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+.hero-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  color: var(--text-faint);
+  font-size: 13.5px;
+}
+.hero-meta span { display: flex; align-items: center; gap: 7px; }
+.hero-meta .sw { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ---------- Sections ---------- */
+section { padding: 72px 0; }
+.section-head { max-width: 640px; margin: 0 0 44px; }
+.section-head .kicker {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-strong);
+  margin-bottom: 10px;
+}
+.section-head h2 { font-size: clamp(26px, 3.5vw, 36px); margin: 0 0 14px; letter-spacing: -0.01em; }
+.section-head p { color: var(--text-dim); font-size: 16.5px; margin: 0; }
+
+.band {
+  background: color-mix(in srgb, var(--bg-raised) 92%, transparent);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* An orbital-path section divider: a thin dashed arc, used instead of a flat line. */
+.orbit-divider { height: 1px; position: relative; overflow: visible; }
+.orbit-divider::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  width: min(90%, 900px);
+  height: 1px;
+  transform: translateX(-50%);
+  border-top: 1px dashed var(--border);
+  opacity: 0.8;
+}
+.orbit-divider::after {
+  content: "";
+  position: absolute;
+  top: -3px; left: 50%;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--gold) 60%, transparent);
+}
+
+/* ---------- Nebula section backgrounds: soft color blooms behind a section,
+   reused down the page at different positions so no two feel identical. ---------- */
+.nebula { position: relative; isolation: isolate; }
+.nebula::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.nebula--indigo::before {
+  background: radial-gradient(ellipse 60% 50% at 15% 10%, color-mix(in srgb, var(--indigo) 20%, transparent), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, color-mix(in srgb, var(--sky) 14%, transparent), transparent 65%);
+}
+.nebula--gold::before {
+  background: radial-gradient(ellipse 55% 45% at 85% 15%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 65%),
+    radial-gradient(ellipse 45% 55% at 10% 85%, color-mix(in srgb, var(--indigo-soft) 16%, transparent), transparent 65%);
+}
+
+/* ---------- HUD-style readouts (mission-console flavor for small labels) ---------- */
+.hud-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+.hud-row .hud-chip {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: color-mix(in srgb, var(--bg-raised) 70%, transparent);
+}
+.hud-row .hud-chip strong { color: var(--text-dim); font-weight: 600; }
+
+/* ---------- Starfield: a fixed, build-time-generated field of dots behind
+   every page. Two CSS pseudo-elements only — no DOM nodes, cheap to paint.
+   The actual radial-gradient stops are generated by scripts/starfield.mjs
+   and injected as a <style> block in <head>; this file only sets layout. ---------- */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* Real content sits in normal DOM order after .starfield, so it paints on
+   top without needing an explicit z-index — verified visually, not assumed. */
+
+/* ---------- Orbit hero: a real two-body orbit, built in HTML/CSS (not SVG)
+   so each body's rotation is anchored to its ring's own box, with no
+   transform-origin ambiguity. ---------- */
+.orbit-hero {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.orbit-hero .ring {
+  position: absolute;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+.orbit-hero .ring--outer { inset: 0; }
+.orbit-hero .ring--inner { inset: 27%; border-color: color-mix(in srgb, var(--indigo-soft) 35%, var(--border)); }
+.orbit-hero .orbit {
+  position: absolute;
+  border-radius: 50%;
+}
+.orbit-hero .orbit--outer { inset: 0; animation: orbit-spin 22s linear infinite; }
+.orbit-hero .orbit--inner { inset: 27%; animation: orbit-spin-reverse 13s linear infinite; }
+.orbit-hero .body {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.orbit-hero .body--a {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 35% 30%, var(--indigo-soft), var(--indigo));
+  box-shadow: 0 0 24px 2px color-mix(in srgb, var(--indigo) 50%, transparent);
+}
+.orbit-hero .body--b {
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 35% 30%, #a5f3fc, var(--sky));
+  box-shadow: 0 0 18px 2px color-mix(in srgb, var(--sky) 55%, transparent);
+}
+.orbit-hero .barycenter {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 13px; height: 13px;
+  margin: -6.5px 0 0 -6.5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 20px 4px color-mix(in srgb, var(--gold) 70%, transparent);
+  animation: barycenter-pulse 3.2s ease-in-out infinite;
+}
+.orbit-hero.orbit-hero--static .orbit,
+.orbit-hero.orbit-hero--static .barycenter { animation: none; }
+.orbit-hero.orbit-hero--sm { max-width: 120px; }
+.orbit-hero.orbit-hero--sm .body--a { width: 14px; height: 14px; }
+.orbit-hero.orbit-hero--sm .body--b { width: 9px; height: 9px; }
+.orbit-hero.orbit-hero--sm .barycenter { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; }
+
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+@keyframes orbit-spin-reverse { to { transform: rotate(-360deg); } }
+@keyframes barycenter-pulse { 0%, 100% { opacity: 0.85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
+@keyframes star-twinkle { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-hero .orbit,
+  .orbit-hero .barycenter,
+  .eyebrow .dot,
+  .starfield::before,
+  .starfield::after { animation: none !important; }
+}
+
+/* ---------- Constellation / ecosystem map ---------- */
+.constellation { width: 100%; height: auto; }
+.constellation .link-line { stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 3 5; fill: none; }
+.constellation .node-dot { fill: var(--sky); stroke: color-mix(in srgb, var(--sky) 60%, transparent); stroke-width: 6; }
+.constellation .node-dot--self { fill: var(--gold); stroke: color-mix(in srgb, var(--gold) 55%, transparent); stroke-width: 9; }
+.constellation .node-label { fill: var(--text); font-family: var(--font-sans); font-size: 15px; font-weight: 700; }
+.constellation .node-caption { fill: var(--text-faint); font-family: var(--font-sans); font-size: 12.5px; }
+.constellation a { cursor: pointer; }
+.constellation a:hover .node-dot { fill: var(--indigo-soft); }
+.constellation a:hover .node-label { fill: var(--accent-strong); }
+
+/* ---------- Grid of cards ---------- */
+.grid { display: grid; gap: 20px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 920px) { .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); transform: translateY(-2px); }
+.card .icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent-strong);
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+.card h3 { margin: 0 0 8px; font-size: 17px; }
+.card p { margin: 0; color: var(--text-dim); font-size: 14.5px; }
+.card code { font-size: 13px; }
+
+/* ---------- Comparison table ---------- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { padding: 13px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+thead th { color: var(--text-faint); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; background: var(--bg-raised); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.yes { color: var(--accent-strong); font-weight: 700; }
+.no { color: var(--text-faint); }
+
+/* ---------- Pipeline / code sample ---------- */
+.codepanel {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.codepanel .bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+.codepanel .bar .d { width: 10px; height: 10px; border-radius: 50%; }
+.codepanel pre { margin: 0; padding: 20px; overflow-x: auto; }
+.codepanel pre, .codepanel code, pre, code { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65; }
+code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+
+/* ---------- Steps / timeline ---------- */
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step { display: flex; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.step:last-child { border-bottom: none; }
+.step .n {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent-strong);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13.5px;
+}
+.step h4 { margin: 2px 0 4px; font-size: 15.5px; }
+.step p { margin: 0; color: var(--text-dim); font-size: 14px; }
+
+/* ---------- Logos / foundations strip ---------- */
+.foundation-strip { display: flex; flex-wrap: wrap; gap: 14px; }
+.pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  background: var(--bg-raised);
+}
+
+/* ---------- CTA band ---------- */
+.cta-band {
+  text-align: center;
+  padding: 80px 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--indigo) 22%, var(--bg-raised)), color-mix(in srgb, var(--sky) 14%, var(--bg-raised)));
+  border: 1px solid var(--border);
+}
+.cta-band h2 { font-size: clamp(24px, 3.5vw, 34px); margin: 0 0 14px; }
+.cta-band p { color: var(--text-dim); margin: 0 0 30px; }
+.cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* ---------- Footer ---------- */
+footer.site-footer { border-top: 1px solid var(--border); padding: 56px 0 36px; color: var(--text-dim); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+@media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+.footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.footer-brand img { width: 24px; height: 24px; }
+.footer-col h5 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-faint); margin: 0 0 14px; }
+.footer-col a { display: block; color: var(--text-dim); font-size: 14px; margin-bottom: 10px; }
+.footer-col a:hover { color: var(--text); text-decoration: none; }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border); padding-top: 24px; font-size: 13px; color: var(--text-faint);
+  flex-wrap: wrap; gap: 12px;
+}
+.social-row { display: flex; gap: 14px; }
+.social-row a {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim);
+}
+.social-row a:hover { color: var(--text); border-color: var(--accent); text-decoration: none; }
+
+/* ---------- Blog ---------- */
+.post-list { display: flex; flex-direction: column; gap: 0; }
+.post-row {
+  display: block;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--border);
+}
+.post-row:first-child { padding-top: 0; }
+.post-row:hover { text-decoration: none; }
+.post-meta { font-size: 13px; color: var(--text-faint); margin-bottom: 8px; display: flex; gap: 10px; align-items: center; }
+.tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent-strong) 14%, transparent);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.post-row h3 { margin: 0 0 8px; font-size: 20px; color: var(--text); }
+.post-row:hover h3 { color: var(--accent-strong); }
+.post-row p { margin: 0; color: var(--text-dim); font-size: 15px; }
+
+.post-header { padding: 56px 0 28px; border-bottom: 1px solid var(--border); margin-bottom: 44px; }
+.post-header .post-meta { margin-bottom: 18px; }
+.post-header h1 { font-size: clamp(28px, 4.5vw, 42px); margin: 0 0 16px; letter-spacing: -0.015em; }
+.post-header .lede { color: var(--text-dim); font-size: 18px; margin: 0; }
+
+.prose { max-width: 720px; font-size: 16.5px; }
+.prose h2 { font-size: 26px; margin: 48px 0 18px; letter-spacing: -0.01em; }
+.prose h3 { font-size: 20px; margin: 36px 0 14px; }
+.prose p { margin: 0 0 20px; color: var(--text); }
+.prose ul, .prose ol { margin: 0 0 20px; padding-left: 22px; color: var(--text); }
+.prose li { margin-bottom: 8px; }
+.prose blockquote {
+  margin: 24px 0;
+  padding: 4px 20px;
+  border-left: 3px solid var(--accent-strong);
+  color: var(--text-dim);
+}
+.prose pre { margin: 24px 0; }
+.prose img { border-radius: var(--radius); margin: 24px 0; }
+.prose hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.prose a { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent); }
+
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-dim); margin-bottom: 28px; }
+.back-link:hover { color: var(--text); text-decoration: none; }
+
+.rss-note { font-size: 13.5px; color: var(--text-faint); margin-top: -8px; margin-bottom: 36px; }
+
+/* ---------- Page header (non-hero pages) ---------- */
+.page-head { padding: 64px 0 20px; }
+.page-head h1 { font-size: clamp(30px, 5vw, 46px); margin: 0 0 16px; letter-spacing: -0.02em; }
+.page-head p { color: var(--text-dim); font-size: 17.5px; max-width: 680px; margin: 0; }
+
+@media (max-width: 760px) {
+  .nav { display: none; }
+  .nav-toggle { display: flex; align-items: center; justify-content: center; }
+  .nav.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 64px; left: 0; right: 0;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px 24px;
+    gap: 16px;
+  }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero { padding: 56px 0 48px; }
+}
+
+/* ---------- Split layout: a two-column grid (text + orbit visual) that
+   collapses to one column on narrow screens. Used wherever a page pairs
+   copy with an orbit diagram; the inline grid-template-columns values used
+   before this had no mobile fallback and squeezed both columns. ---------- */
+.split {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+  grid-template-columns: 1.1fr 0.9fr;
+}
+.split.split--rev { grid-template-columns: 0.8fr 1.2fr; }
+.split.split--tight { grid-template-columns: 1.2fr 0.8fr; }
+.split.split--fixed { grid-template-columns: 1fr 140px; }
+@media (max-width: 860px) {
+  .split,
+  .split.split--rev,
+  .split.split--tight,
+  .split.split--fixed {
+    grid-template-columns: 1fr;
+  }
+  .split .orbit-hero { max-width: 220px; margin: 0 auto; }
+}
+
+/* Flex/grid items default to min-width:auto, which refuses to shrink below
+   their content's unwrapped width — that min-content can cascade upward and
+   force the whole page wider than the viewport on narrow screens. Opt back
+   into normal wrapping/shrinking wherever that bit us. */
+.hud-chip { min-width: 0; }
+.split > * { min-width: 0; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal-stagger.is-visible .card:nth-child(1) { transition-delay: 0.02s; }
+.reveal-stagger.is-visible .card:nth-child(2) { transition-delay: 0.08s; }
+.reveal-stagger.is-visible .card:nth-child(3) { transition-delay: 0.14s; }
+.reveal-stagger.is-visible .card:nth-child(4) { transition-delay: 0.2s; }
+.reveal-stagger.is-visible .card:nth-child(5) { transition-delay: 0.26s; }
+.reveal-stagger.is-visible .card:nth-child(6) { transition-delay: 0.32s; }
+.reveal-stagger .card { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.15s ease, box-shadow 0.15s ease; }
+.reveal-stagger.is-visible .card { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger .card { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Card accent colors: each card can declare which brand color
+   it glows in, instead of every card sharing one flat indigo tint. ---------- */
+.card { --card-accent: var(--accent-strong); }
+.card--indigo { --card-accent: var(--indigo-soft); }
+.card--sky { --card-accent: var(--sky); }
+.card--gold { --card-accent: var(--gold); }
+.card .icon {
+  background: color-mix(in srgb, var(--card-accent) 18%, transparent);
+  color: var(--card-accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--card-accent) 30%, transparent);
+  transition: transform 0.2s ease;
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--card-accent) 55%, var(--border));
+  box-shadow: 0 16px 40px -16px color-mix(in srgb, var(--card-accent) 45%, transparent);
+  transform: translateY(-4px);
+}
+.card:hover .icon { transform: scale(1.08); }
+
+/* ---------- Button sheen: a light sweep on hover ---------- */
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+.btn-primary:hover::after { left: 130%; }
+@media (prefers-reduced-motion: reduce) { .btn-primary::after { transition: none; display: none; } }
+
+/* ---------- Stat strip ---------- */
+.stat-row { display: flex; gap: 48px; flex-wrap: wrap; }
+.stat-row .stat b {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 34px;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--indigo-soft), var(--sky));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat-row .stat span { font-size: 13px; color: var(--text-faint); }
+
+/* ---------- Code panel: syntax token colors (from scripts/highlight.mjs) ---------- */
+.tok-key { color: var(--sky); }
+.tok-str { color: var(--gold); }
+.tok-val { color: var(--text); }
+.tok-punc { color: var(--text-faint); }
+.tok-comment { color: var(--text-faint); font-style: italic; }
+
+/* ---------- Constellation: flowing connector lines and a pulsing node ---------- */
+.constellation .link-line { animation: dash-flow 3s linear infinite; }
+.constellation .node-dot, .constellation .node-dot--self { animation: node-pulse 3.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes dash-flow { to { stroke-dashoffset: -16; } }
+@keyframes node-pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
+
+/* ---------- Depth vignette behind the whole page ---------- */
+.starfield {
+  background: radial-gradient(ellipse 80% 55% at 50% -8%, rgba(79, 70, 229, 0.14), transparent 60%),
+    radial-gradient(ellipse 100% 55% at 50% 108%, rgba(0, 0, 0, 0.5), transparent 60%);
+}
+
+/* ---------- Comet: a rare, brief streak across the sky ---------- */
+.comet {
+  position: fixed;
+  top: 8%;
+  left: 0;
+  width: 140px;
+  height: 2px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  border-radius: 2px;
+  filter: drop-shadow(0 0 6px rgba(165, 243, 252, 0.8));
+  opacity: 0;
+  animation: comet-streak 22s linear infinite;
+}
+@keyframes comet-streak {
+  0%, 85% { opacity: 0; transform: translate(-20vw, -5vh) rotate(28deg); }
+  87% { opacity: 1; }
+  93% { opacity: 1; transform: translate(70vw, 55vh) rotate(28deg); }
+  96%, 100% { opacity: 0; transform: translate(85vw, 68vh) rotate(28deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .comet, .constellation .link-line, .constellation .node-dot, .constellation .node-dot--self {
+    animation: none !important;
+  }
+}

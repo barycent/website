@@ -1,0 +1,12 @@
+{
+  "name": "barycent-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "barycent.dev — static site and blog, zero npm dependencies",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --serve"
+  },
+  "engines": { "node": ">=18" }
+}
